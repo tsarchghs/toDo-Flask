@@ -83,9 +83,9 @@ def getToDos(user_id,path):
 	conn = sqlite3.connect(path)
 	c = conn.cursor()
 	c.execute("SELECT * FROM toDo WHERE user_id=?",(user_id,))
-	users = c.fetchall()
+	toDos = c.fetchall()
 	conn.close()
-	print(users)
+	return toDos
 #createUser("DSADddA","DSADdsaAS","db.sqlite3")
 #getToDos(1,"db.sqlite3")
 #createToDo(1,"dasdsa","db.sqlite3")
