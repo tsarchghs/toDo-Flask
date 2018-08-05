@@ -18,6 +18,7 @@ def login():
 		password = request.form["password"]
 		if loginUser(username,password,dbPath):
 			session["logged_in"] = True
+			session["username"] = username
 			return redirect("/index")
 		else:
 			return render_template("auth/login.html",invalid=True)
