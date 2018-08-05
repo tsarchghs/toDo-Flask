@@ -35,4 +35,12 @@ def loginUser(username,password,path):
 			break
 	return False
 
-print(loginUser("gjergjk71","gjergji.123","db.sqlite3"))
+def createUser(username,password,path):
+	conn = sqlite3.connect(path)
+	c - conn.cursor()
+	user = c.execute("""INSERT INTO User(username,password)
+						 VALUES ({},{});""".format(username,password))
+	conn.commit()
+	conn.close()
+
+#print(loginUser("gjergjk71","gjergji.123","db.sqlite3"))
