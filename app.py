@@ -49,6 +49,12 @@ def login():
 	else:
 		return redirect(url_for("index"))
 
+@app.route("/logout")
+def logout():
+	session["logged_in"] = False
+	del session["user_id"]
+	return redirect(url_for("login"))
+
 @app.route("/register",methods=["GET","POST"])
 def register():
 	try:
