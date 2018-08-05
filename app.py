@@ -1,12 +1,27 @@
 from flask import Flask,session,request,render_template,redirect,url_for
-from database import createDatabase,createUserModel,loginUser,usernameExists,createUser
+from database import createDatabase,createUserModel,loginUser,usernameExists,createUser,createToDoModel
+from database import createToDo,getToDos
 import bcrypt
 import os
 
 dbPath = "db.sqlite3"
 createDatabase(dbPath)
 createUserModel(dbPath)
+createToDoModel(dbPath)
 app = Flask(__name__)
+
+@app.route("/index")
+def index():
+	try:
+		session["logged_in"]
+	except KeyError:
+		session["logged_in"] = False
+	if session["logged_in"]:
+		toDos = getToDos(session["user_id"],dbPath)
+		print(toDos)
+		return render_template("index.html",toDos=toDos)
+	else:
+		return redirect(url_for("login"))
 
 @app.route("/login",methods=["GET","POST"])
 def login():
@@ -20,14 +35,15 @@ def login():
 		elif request.method == "POST":
 			username = request.form["username"]
 			password = request.form["password"]
-			if loginUser(username,password,dbPath):
+			user = loginUser(username,password,dbPath)
+			if user:
 				session["logged_in"] = True
-				session["username"] = username
-				return redirect("/index")
+				session["user_id"] = user[0]
+				return redirect(url_for("index"))
 			else:
 				return render_template("auth/login.html",invalid=True)
 	else:
-		return redirect("/index")
+		return redirect(url_for("index"))
 
 @app.route("/register",methods=["GET","POST"])
 def register():
@@ -49,7 +65,7 @@ def register():
 			else:
 				return render_template("auth/register.html",invalid=True)
 	else:
-		return redirect("/index")
+		return redirect(url_for("index"))
 
 if __name__ == "__main__":
 	app.secret_key = os.urandom(12)
