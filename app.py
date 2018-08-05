@@ -1,13 +1,13 @@
 from flask import Flask,session,request,render_template,redirect,url_for
-from flask_bcrypt import Bcrypt
 from database import createDatabase,createUserModel,loginUser,usernameExists,createUser
+import bcrypt
+import os
 
 dbPath = "db.sqlite3"
 createDatabase(dbPath)
 createUserModel(dbPath)
 
 app = Flask(__name__)
-bcrypt = Bcrypt(app)
 
 @app.route("/login",methods=["GET","POST"])
 def login():
@@ -16,8 +16,7 @@ def login():
 	elif request.method == "POST":
 		username = request.form["username"]
 		password = request.form["password"]
-		password_hashed = bcrypt.generate_password_hash(password)
-		if loginUser(username,password_hashed,dbPath):
+		if loginUser(username,password,dbPath):
 			session["logged_in"] = True
 			return redirect("/index")
 		else:
@@ -30,7 +29,7 @@ def register():
 	elif request.method == "POST":
 		username = request.form["username"]
 		password = request.form["password"]
-		password_hashed = bcrypt.generate_password_hash(password)
+		password_hashed = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt())
 		if not usernameExists(username,dbPath):
 			createUser(username,password_hashed,dbPath)
 			return redirect(url_for("login"))
@@ -39,6 +38,7 @@ def register():
 
 
 if __name__ == "__main__":
+	app.secret_key = os.urandom(12)
 	app.run(debug=True,port=8080)
 
 
