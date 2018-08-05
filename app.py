@@ -1,6 +1,6 @@
 from flask import Flask,session,request,render_template,redirect,url_for
 from database import createDatabase,createUserModel,loginUser,usernameExists,createUser,createToDoModel
-from database import createToDo,getToDos
+from database import createToDo,getToDos,deleteToDo
 import bcrypt
 import os
 
@@ -26,6 +26,19 @@ def index():
 		return render_template("index.html",toDos=toDos)
 	else:
 		return redirect(url_for("login"))
+
+@app.route("/delete/<int:todo_id>")
+def delete(todo_id):
+	try:
+		session["logged_in"]
+	except KeyError:
+		session["logged_in"] = False
+	if session["logged_in"]:
+		deleteToDo(session["user_id"],todo_id,dbPath)
+		return redirect(url_for("index"))
+	else:
+		return redirect(url_for("login"))
+
 
 @app.route("/login",methods=["GET","POST"])
 def login():
