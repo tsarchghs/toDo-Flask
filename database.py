@@ -78,6 +78,12 @@ def createToDo(user_id,description,path):
 	conn.commit()
 	conn.close()
 
+def deleteToDo(user_id,todo_id,path):
+	conn = sqlite3.connect(path)
+	c = conn.cursor()
+	c.execute("DELETE FROM toDo WHERE user_id=? and id=?",(user_id,todo_id,))
+	conn.commit()
+	conn.close()
 
 def getToDos(user_id,path):
 	conn = sqlite3.connect(path)
