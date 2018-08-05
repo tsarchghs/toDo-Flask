@@ -25,7 +25,7 @@ def createToDoModel(path):
 	table = "toDo"
 	columns = """
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		user_id TEXT,
+		user_id INTEGER,
 		description TEXT
 			 """
 	conn = sqlite3.connect(path)
@@ -67,5 +67,10 @@ def usernameExists(username,path):
 		if user[1] == username:
 			return True
 	return False	
+"""
+def getToDos(user_id):
+	conn = sqlite3.connect(path)
+	c = conn.cursor()
+	users = c.execute("SELECT * FROM User WHERE user_id")"""
 
 #createUser("DSADddA","DSADdsaAS","db.sqlite3")
