@@ -37,9 +37,11 @@ def loginUser(username,password,path):
 
 def createUser(username,password,path):
 	conn = sqlite3.connect(path)
-	c - conn.cursor()
+	c = conn.cursor()
 	user = c.execute("""INSERT INTO User(username,password)
-						 VALUES ({},{});""".format(username,password))
+						 VALUES (?,?);""",(username,password))
+	print("""INSERT INTO User(username,password)
+						 VALUES ('{}','{}');""".format(username,password))
 	conn.commit()
 	conn.close()
 
@@ -55,4 +57,4 @@ def usernameExists(username,path):
 			return True
 	return False	
 
-#print(loginUser("gjergjk71","gjergji.123","db.sqlite3"))
+#createUser("DSADddA","DSADdsaAS","db.sqlite3")
