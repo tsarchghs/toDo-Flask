@@ -44,7 +44,7 @@ def loginUser(username,password,path):
 	conn.close()
 	for user in users:
 		if user[1] == username:
-			if bcrypt.checkpw(password.encode('utf8'),user[2].encode('utf8')):
+			if bcrypt.checkpw(password.encode('utf8'),user[2]):
 				return user
 			break
 	return False
