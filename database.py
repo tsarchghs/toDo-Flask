@@ -43,4 +43,16 @@ def createUser(username,password,path):
 	conn.commit()
 	conn.close()
 
+def usernameExists(username,path):
+	conn = sqlite3.connect(path)
+	c = conn.cursor()
+	users = c.execute("SELECT * FROM User")
+	users = c.fetchall()
+	conn.close()
+	for user in users:
+		print(user)
+		if user[1] == username:
+			return True
+	return False	
+
 #print(loginUser("gjergjk71","gjergji.123","db.sqlite3"))
