@@ -1,6 +1,6 @@
 from flask import Flask,session,request,render_template,redirect,url_for
 from flask_bcrypt import Bcrypt
-from database import createDatabase,createUserModel,loginUser
+from database import createDatabase,createUserModel,loginUser,usernameExists,createUser
 
 dbPath = "db.sqlite3"
 createDatabase(dbPath)
@@ -27,6 +27,16 @@ def login():
 def register():
 	if request.method == "GET":
 		return render_template("auth/register.html")
+	elif request.method == "POST":
+		username = request.form["username"]
+		password = request.form["password"]
+		password_hashed = bcrypt.generate_password_hash(password)
+		if not usernameExists(username,dbPath):
+			createUser(username,password_hashed,dbPath)
+			return redirect(url_for("login"))
+		else:
+			return render_template("auth/register.html",invalid=True)
+
 
 if __name__ == "__main__":
 	app.run(debug=True,port=8080)
