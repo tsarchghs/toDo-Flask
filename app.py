@@ -25,7 +25,8 @@ def login():
 
 @app.route("/register",methods=["GET","POST"])
 def register():
-	pass
+	if request.method == "GET":
+		return render_template("auth/register.html")
 
 if __name__ == "__main__":
 	app.run(debug=True,port=8080)
