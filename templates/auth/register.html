@@ -1,0 +1,9 @@
+<form method="POST">
+	{% if invalid %}
+		Username already exists!
+	{% endif %}
+	<br>
+	Username: <input name="username">
+	Password: <input name="password">
+	<button type="submit">Register</button>
+</form>
