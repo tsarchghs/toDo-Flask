@@ -67,10 +67,13 @@ def usernameExists(username,path):
 		if user[1] == username:
 			return True
 	return False	
-"""
-def getToDos(user_id):
+
+def getToDos(user_id,path):
 	conn = sqlite3.connect(path)
 	c = conn.cursor()
-	users = c.execute("SELECT * FROM User WHERE user_id")"""
-
+	users = c.execute("SELECT * FROM toDo WHERE user_id=?",(user_id,))
+	users = users.fetchall()
+	conn.close()
+	print(users)
 #createUser("DSADddA","DSADdsaAS","db.sqlite3")
+#getToDos(1,"db.sqlite3")
