@@ -31,8 +31,8 @@ def loginUser(username,password,path):
 		print(user)
 		if user[1] == username:
 			if user[2] == password:
-				return True
+				return user
 			break
 	return False
 
-#print(loginUser("gjergjk71","gjergji.123","db.sqlite3"))
+print(loginUser("gjergjk71","gjergji.123","db.sqlite3"))
