@@ -6,37 +6,50 @@ import os
 dbPath = "db.sqlite3"
 createDatabase(dbPath)
 createUserModel(dbPath)
-
 app = Flask(__name__)
 
 @app.route("/login",methods=["GET","POST"])
 def login():
-	if request.method == "GET":
-		return render_template("auth/login.html")
-	elif request.method == "POST":
-		username = request.form["username"]
-		password = request.form["password"]
-		if loginUser(username,password,dbPath):
-			session["logged_in"] = True
-			session["username"] = username
-			return redirect("/index")
-		else:
-			return render_template("auth/login.html",invalid=True)
+	try:
+		session["logged_in"]
+	except KeyError:
+		session["logged_in"] = False
+	if not session["logged_in"]:
+		if request.method == "GET":
+			return render_template("auth/login.html")
+		elif request.method == "POST":
+			username = request.form["username"]
+			password = request.form["password"]
+			if loginUser(username,password,dbPath):
+				session["logged_in"] = True
+				session["username"] = username
+				return redirect("/index")
+			else:
+				return render_template("auth/login.html",invalid=True)
+	else:
+		return redirect("/index")
 
 @app.route("/register",methods=["GET","POST"])
 def register():
-	if request.method == "GET":
-		return render_template("auth/register.html")
-	elif request.method == "POST":
-		username = request.form["username"]
-		password = request.form["password"]
-		password_hashed = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt())
-		if not usernameExists(username,dbPath):
-			createUser(username,password_hashed,dbPath)
-			return redirect(url_for("login"))
-		else:
-			return render_template("auth/register.html",invalid=True)
+	try:
+		session["logged_in"]
+	except KeyError:
+		session["logged_in"] = False
+	if not session["logged_in"]:
 
+		if request.method == "GET":
+			return render_template("auth/register.html")
+		elif request.method == "POST":
+			username = request.form["username"]
+			password = request.form["password"]
+			password_hashed = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt())
+			if not usernameExists(username,dbPath):
+				createUser(username,password_hashed,dbPath)
+				return redirect(url_for("login"))
+			else:
+				return render_template("auth/register.html",invalid=True)
+	else:
+		return redirect("/index")
 
 if __name__ == "__main__":
 	app.secret_key = os.urandom(12)
