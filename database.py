@@ -19,7 +19,22 @@ def createUserModel(path):
 	c.execute("CREATE TABLE IF NOT EXISTS {}({});".format(table,columns))
 	conn.commit()
 	conn.close()
-	print("Created User table")
+	print("User table created or already existed")
+
+def createToDoModel(path):
+	table = "toDo"
+	columns = """
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		user_id TEXT,
+		description TEXT
+			 """
+	conn = sqlite3.connect(path)
+	c = conn.cursor()
+	c.execute("CREATE TABLE IF NOT EXISTS {}({});".format(table,columns))
+	conn.commit()
+	conn.close()
+	print("toDo table created or already existed")
+
 
 def loginUser(username,password,path):
 	conn = sqlite3.connect(path)
