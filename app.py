@@ -10,13 +10,17 @@ createUserModel(dbPath)
 createToDoModel(dbPath)
 app = Flask(__name__)
 
-@app.route("/index")
+@app.route("/index",methods=["GET","POST"])
 def index():
 	try:
 		session["logged_in"]
 	except KeyError:
 		session["logged_in"] = False
 	if session["logged_in"]:
+		if request.method == "POST":
+			description = request.form["description"]
+			createToDo(session["user_id"],description,dbPath)
+			return redirect(url_for("index"))
 		toDos = getToDos(session["user_id"],dbPath)
 		print(toDos)
 		return render_template("index.html",toDos=toDos)
