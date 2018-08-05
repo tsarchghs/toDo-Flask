@@ -23,6 +23,10 @@ def login():
 		else:
 			return render_template("auth/login.html",invalid=True)
 
+@app.route("/register",methods=["GET","POST"])
+def register():
+	pass
+
 if __name__ == "__main__":
 	app.run(debug=True,port=8080)
 
