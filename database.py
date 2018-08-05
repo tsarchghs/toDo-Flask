@@ -1,4 +1,5 @@
 import sqlite3
+import bcrypt
 
 def createDatabase(path):
 	conn = sqlite3.connect(path)
@@ -25,12 +26,10 @@ def loginUser(username,password,path):
 	c = conn.cursor()
 	users = c.execute("SELECT * FROM User")
 	users = c.fetchall()
-	print(users)
 	conn.close()
 	for user in users:
-		print(user)
 		if user[1] == username:
-			if user[2] == password:
+			if bcrypt.checkpw(password.encode('utf8'),user[2].encode('utf8')):
 				return user
 			break
 	return False
@@ -40,8 +39,6 @@ def createUser(username,password,path):
 	c = conn.cursor()
 	user = c.execute("""INSERT INTO User(username,password)
 						 VALUES (?,?);""",(username,password))
-	print("""INSERT INTO User(username,password)
-						 VALUES ('{}','{}');""".format(username,password))
 	conn.commit()
 	conn.close()
 
@@ -52,7 +49,6 @@ def usernameExists(username,path):
 	users = c.fetchall()
 	conn.close()
 	for user in users:
-		print(user)
 		if user[1] == username:
 			return True
 	return False	
