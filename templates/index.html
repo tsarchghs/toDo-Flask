@@ -19,15 +19,17 @@
 		<div class="unlst">
 			<h4>You have stuff to do!</h4>
 			<hr>
-			<ul class="list">
-				{% for toDo in toDos %}
-					<li>{{ toDo.2 }}</li>
-					<a href="{{ url_for("delete",todo_id=toDo.0) }}"><i class="fas fa-trash"></i></a>
-					</br>
-				{% else %}
-					<li>Nothing To Do!</li>
-				{% endfor %}
-			</ul>
+			<center>
+				<ul class="list">
+					{% for toDo in toDos %}
+						<li>{{ toDo.2 }}</li>
+						<a href="{{ url_for("delete",todo_id=toDo.0) }}"><i class="fas fa-trash"></i></a>
+						</br>
+					{% else %}
+						<li>Nothing To Do!</li>
+					{% endfor %}
+				</ul>
+			</center>
 		</div>
 	</body>
 </html>
