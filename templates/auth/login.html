@@ -1,9 +1,20 @@
-<form method="POST">
-	{% if invalid %}
-		Username or Password is wrong!
-	{% endif %}
-	<br>
-	Username: <input name="username">
-	Password: <input name="password">
-	<button type="submit">Login</button>
-</form>
+<!DOCTYPE html>
+	<head>
+		<title>Login</title>
+		<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/login.css') }}">
+	</head>
+	<body>
+		<div class="bkg">
+			</br> </br> </br> </br> </br> </br> </br> </br>
+			<form method="POST">
+				<h4 class="lgn">Login</h4>
+				<input name="username" type="text" placeholder="Username" >
+				<input name="password" type="password" placeholder="Password">
+				<button type="submit" class="btn">Login</button>
+				{% if invalid %}
+					<h4 class="wrn">Username or Password is wrong!</h4>
+				{% endif %}
+			</form>
+		</div>
+	</body>
+</html>
