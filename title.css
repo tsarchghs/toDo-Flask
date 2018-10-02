@@ -1,0 +1,8 @@
+body {
+	background-image: url('/static/img/title-bkgrnd.jpg');
+	background-size: cover;
+}
+div {
+	margin-top:100px;
+	margin-left:600px;
+}
