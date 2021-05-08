@@ -12,6 +12,10 @@ app = Flask(__name__)
 
 app.secret_key = os.urandom(12)
 
+@app.route("/")
+def title():
+	return render_template("title.html")
+
 @app.route("/index",methods=["GET","POST"])
 def index():
 	try:
